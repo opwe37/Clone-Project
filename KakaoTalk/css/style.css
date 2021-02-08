@@ -1,0 +1,419 @@
+:root {
+    /* font size */
+    --font--large: 20px;
+    --font--medium: 15px;
+    --font--small: 13px;
+
+    /* nav size */
+    --nav--menu--big: 25px;
+
+    /* padding */
+    --padding: 10px;
+
+    /* color */
+    --black--color: black;
+    --white--color: white;
+    --gray--bright--color: #fafafa;
+    --gray--dark--color: #474747;
+    --gray--light--color: #eeeeee;
+    --gray--light2--color: #e0e0e0;
+    --gray--light3--color: #9e9e9e;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+}
+
+/* header */
+header {
+    display:flex;
+    justify-content: space-between;
+    font-size: var(--font--large);
+    font-weight: bold;
+    padding: var(--padding);
+    padding-bottom: 0;
+    background-color: var(--white--color);
+    margin-top: 13px;
+}
+
+header ul {
+    display: flex;
+    list-style: none;
+    box-sizing: initial;
+}
+
+header ul li {
+    border-radius: 50%;
+    text-align: center;
+    padding: calc(var(--padding)/2); 
+    width: 37px;
+}
+
+header ul li:hover {
+    background-color: var(--gray--light--color);
+    cursor: pointer;
+}
+
+/* navigation */
+nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 0 0 auto;
+    width : 65px;
+    background-color: var(--gray--light--color);
+    border-right: 1px solid var(--gray--light2--color);
+}
+
+nav ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    list-style-type: none;
+    box-sizing: initial;
+    margin-bottom: var(--padding);
+}
+
+nav ul li {
+    width: 33px;
+    margin-top: var(--padding);
+    text-align: center;
+    padding: calc(var(--padding)/2);
+    border-radius: 50%;
+}
+
+nav ul li:hover {
+    background-color: var(--gray--light2--color);
+    cursor: pointer;
+}
+
+nav div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+nav > div {
+    padding-top: var(--padding);
+}
+
+nav > div > div {
+    position: relative;
+    align-items: center;
+    height: 65px;
+    font-size: var(--nav--menu--big);
+    color: var(--gray--light3--color);
+}
+
+i.active {
+    color: var(--gray--dark--color);
+}
+
+nav .alarm {
+    position: absolute;
+    top: 12px;
+    right: 7px;
+}
+
+/* ============= index.html ============= */
+/* User Profile */
+.user_profile {
+    display: flex;
+    align-items: center;
+    padding: var(--padding);
+}
+
+.user_profile img {
+    width: 55px;
+    border-radius: 40%;
+}
+
+.user_profile .text {
+    font-size: var(--font--medium);
+    font-weight: bold;
+    padding-left: var(--padding);
+}
+
+.friend_list {
+    overflow-y: auto;
+    height: calc(100% - 47px);
+    padding-bottom: var(--padding);
+}
+
+/* Friend Profile */
+.friends_profile {
+    display: flex;
+    align-items: center;
+    padding: var(--padding);
+}
+
+.friends_profile img {
+    width: 45px;
+    border-radius: 40%;
+}
+
+.friends_profile .text {
+    font-size: var(--font--medium);
+    font-weight: bold;
+    padding-left: var(--padding);
+}
+
+.friends_profile .state {
+    font-size: var(--font--medium);
+    font-weight: lighter;
+    color: var(--gray--light3--color);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.friends_profile:hover {
+    background-color: var(--gray--light--color);
+}
+
+/* subTitle */
+.subTitle {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 5px 10px 5px 10px;
+    color: var(--gray--dark--color);
+}
+
+/* ============= chat.html ============= */
+/* chat */
+.chatList_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--padding);
+}
+
+.chatInfo {
+    display: flex;
+    align-items: center;
+}
+
+.chatList_container img {
+    width: 45px;
+    border-radius: 35%;
+    border-color: var(--gray--light3--color);
+}
+
+.chatList_container .chatInfo .text {
+    font-size: var(--font--medium);
+    padding-left: var(--padding);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.chatList_container .chatInfo .name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
+
+.chatList_container .chatInfo .chatSample {
+    font-weight: lighter;
+    color: var(--gray--light3--color);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.chatList_container:hover{
+    background-color: var(--gray--light--color);
+}
+
+/* ============= more.html ============= */
+
+.profileCard {
+    display: flex;
+    flex-direction: column;
+    margin: var(--padding);
+    margin-top: 30px;
+    border: 1px solid var(--gray--light2--color);
+    border-radius: 5px;
+    background-color: var(--gray--bright--color);
+}
+
+.profileCard .nameAndmail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--gray--light2--color);
+}
+
+.profileCard .nameAndmail div {
+    display: flex;
+    flex-direction: column;
+    padding: calc(var(--padding)*1.5);
+}
+
+.profileCard .nameAndmail .text .name {
+    font-size: 17px;
+}
+
+.profileCard .nameAndmail .text .mail {
+    font-size: 12px;
+    margin-top: calc(var(--padding)/2);
+    color: var(--gray--light3--color);
+}
+
+button {
+    all: unset;
+}
+
+.profileCard button {
+    display: flex;
+    padding: var(--padding) calc(var(--padding)*2);
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+}
+.profileCard button:hover {
+    cursor: pointer;
+    background-color: var(--gray--light2--color);
+}
+
+.profileCard i {
+    color: var(--gray--light2--color);
+    font-size: 23px;
+}
+
+.profileCard i:hover {
+    cursor: pointer;
+}
+
+.items_conatainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: calc(var(--padding)*3);
+    justify-items: center;
+    margin: var(--padding);
+    padding: calc(var(--padding)*2) 0;
+    border-bottom: 1px solid var(--gray--light2--color);
+}
+
+.items_conatainer .item:nth-child(1) {grid-column: 1;}
+.items_conatainer .item:nth-child(2) {grid-column: 2;}
+.items_conatainer .item:nth-child(3) {grid-column: 3;}
+.items_conatainer .item:nth-child(4) {grid-column: 4;}
+.items_conatainer .item:nth-child(5) {grid-column: 1;}
+.items_conatainer .item:nth-child(6) {grid-column: 2;}
+.items_conatainer .item:nth-child(7) {grid-column: 3;}
+.items_conatainer .item:nth-child(8) {grid-column: 4;}
+
+.items_conatainer .item:hover,
+.items_conatainer .item:hover .text{
+    cursor: pointer;
+    color: var(--black--color);
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-size: 20px;
+}
+
+.item .text {
+    padding-top: calc(var(--padding)*1.5);
+    font-size: 13px;
+    color: var(--gray--light3--color);
+}
+
+.notify {
+    margin: var(--padding);
+    height: 50px;
+    overflow: hidden;
+}
+
+.notify .rollingArea {
+    position: relative;
+    will-change: transform;
+}
+
+.notify .rollingArea .item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    height: 50px;
+    font-size: var(--font--small);
+}
+
+.notify .rollingArea .item .text_header{
+    font-weight: bold;
+    margin-right: var(--padding);
+    margin-left: var(--padding);
+}
+
+.notify .rollingArea:hover {
+    cursor: pointer;
+    animation-play-state: paused;
+}
+
+@keyframes rolling {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(0, -50px, 0);
+    }
+}
+
+
+
+
+
+a {
+    color: unset;
+    text-decoration: none;
+}
+
+main {
+    width: 100%;
+    height: 100%;
+    min-width: 330px;
+    overflow: hidden;
+}
+
+.line {
+    margin: 5px 10px 5px 10px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.chatRoom_end {
+    height: 34px;
+}
+
+.chatRoom_end > .time {
+    height: 17px;
+    color:#aeaeae;
+    font-size: 12px;
+}
+
+.alarm {
+    height: 17px;
+    background-color: #f44336;
+    color: white;
+    width: fit-content;
+    padding: 0 5px 0 5px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 12px;
+    margin-left: auto;
+}
