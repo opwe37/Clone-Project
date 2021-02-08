@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/297f4c15e1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/chat.css">
+    <script defer src="javascript/chat.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <img class="header__img" src="image/avatar_01.jpg" alt="">
+        <div>
+            <span class="header__userName">이름</span>
+            <div class="icons">
+                <span>
+                    <span><i class="fas fa-inbox"></i></span>
+                    <span><i class="fas fa-search"></i></span>
+                </span>
+                <span><i class="fas fa-bars"></i></span>
+            </div>
+        </div>
+        <span class="close" title="닫기" onclick="history.back()"><i class="fas fa-times"></i></span>
+    </header>
+
+    <div class="chatScreen">
+        <div class="chat-main-screen">
+
+            <section class="friendChat" style="display: flex;">
+                <img src="image/avatar_01.jpg" alt="">
+                <div style="margin-left: 15px">
+                    <span class="chatScreen__name">name</span>
+                    <div class="textContainer">
+                        <div class="balloon_left">
+                            This is
+                        </div>
+                    </div>
+                    <div class="textContainer">
+                        <div class="balloon_left">
+                            KakaoTALK Clone!!
+                        </div>
+                        <div class="time">오후 5:34</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="myChat">
+                <div class="textContainer">
+                    <div class="time">오후 5:34</div>
+                    <div class="balloon_right">
+                        text test
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="chatForm">
+        <section>
+            <textarea class="t" oninput="textArea_AutoResize(this)"></textarea>
+            <div><button onclick="chatSubmit()" disabled>전송</button></div>
+        </section>
+        <section>
+            <span><i class="far fa-smile"></i></span>
+            <span><i class="fas fa-paperclip"></i></span>
+            <span></span>
+            <span></span>
+        </section>
+    </div>
+</body>
+</html>

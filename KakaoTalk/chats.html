@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="javascript/chats.js"></script>
+    <script src="https://kit.fontawesome.com/297f4c15e1.js" crossorigin="anonymous"></script>
+    <title>Clone Projext_Kakao</title>
+</head>
+<body>
+    <nav>
+        <div class="main_nav">
+            <div title="친구"><a href="/index.html"><i class="fas fa-user"></i></a></div>
+            <div title="채팅">
+                <a href="#">
+                    <i class="fas fa-comment active"></i>
+                    <div class="alarm">1</div>
+                </a>
+            </div>
+            <div title="더보기"><a href="/more.html"><i class="fas fa-ellipsis-h"></i></a></div>
+        </div>
+        <ul>
+            <li><i class="far fa-bell"></i></li>
+            <li><i class="fas fa-cog"></i></li>
+        </ul>
+    </nav>
+    <main>
+        <header>
+            <div>
+                <strong style="font-size:20px">채팅</strong>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <ul>
+                <li><i class="fas fa-search"></i></li>
+                <li><i class="far fa-comments"></i></li>
+                <li><i class="fas fa-comment-medical"></i></li>
+            </ul>
+        </header>
+
+        <div class="chat_main">
+            <div class="chatList_container"  data="0" ondblclick="moveChat(this)">
+                <div class="chatInfo">
+                    <img src="image/avatar_01.jpg" alt="">
+                    <div class="text">
+                        <div class="name">My Name</div>
+                        <div class="chatSample">Hello~ Clone World!</div>
+                    </div>
+                </div>
+                <div class="chatRoom_end">
+                    <div class="time">오후 2:07</div>
+                    <div class="alarm">1</div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
