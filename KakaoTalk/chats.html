@@ -4,27 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/side_nav.css">
     <script src="javascript/chats.js"></script>
     <script src="https://kit.fontawesome.com/297f4c15e1.js" crossorigin="anonymous"></script>
     <title>Clone Projext_Kakao</title>
 </head>
 <body>
-    <nav>
-        <div class="main_nav">
-            <div title="친구"><a href="/index.html"><i class="fas fa-user"></i></a></div>
-            <div title="채팅">
-                <a href="#">
-                    <i class="fas fa-comment active"></i>
-                    <div class="alarm">1</div>
-                </a>
-            </div>
-            <div title="더보기"><a href="/more.html"><i class="fas fa-ellipsis-h"></i></a></div>
-        </div>
-        <ul>
-            <li><i class="far fa-bell"></i></li>
-            <li><i class="fas fa-cog"></i></li>
-        </ul>
-    </nav>
+    <div id="side_nav"></div>
     <main>
         <header>
             <div>
@@ -54,5 +40,14 @@
             </div>
         </div>
     </main>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script src="javascript/Components/side_nav.js" type='text/babel'></script>
+    <script type='text/babel'>
+        ReactDOM.render(<SideNav loc="chats"/>, document.querySelector('#side_nav'));
+    </script>
 </body>
 </html>

@@ -4,27 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/side_nav.css">
     <script src="https://kit.fontawesome.com/297f4c15e1.js" crossorigin="anonymous"></script>
     <script defer src="javascript/more.js"></script>
     <title>Document</title>
 </head>
 <body>
-    <nav>
-        <div>
-            <div title="친구"><a href="/index.html"><i class="fas fa-user"></i></a></div>
-            <div title="채팅">
-                <a href="/chats.html">
-                    <i class="fas fa-comment"></i>
-                    <div class="alarm">1</div>
-                </a>
-            </div>
-            <div title="더보기"><a href="#"><i class="fas fa-ellipsis-h active"></i></a></div>
-        </div>
-        <ul>
-            <li><i class="far fa-bell"></i></li>
-            <li><i class="fas fa-cog"></i></li>
-        </ul>
-    </nav>
+    <div id="side_nav"></div>
     <main>
         <header>
             <span class="title">더보기</span>
@@ -88,5 +74,14 @@
             </div>
         </section>
     </main>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script src="javascript/Components/side_nav.js" type='text/babel'></script>
+    <script type='text/babel'>
+        ReactDOM.render(<SideNav loc="more"/>, document.querySelector('#side_nav'));
+    </script>
 </body>
 </html>
