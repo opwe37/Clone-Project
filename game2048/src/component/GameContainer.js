@@ -1,8 +1,35 @@
-import React, { useState } from 'react';
-import { initTile } from '../utils/tile';
+import React, { useEffect, useState } from 'react';
+import { addKey, removeKey } from '../utils/keyboard';
+import { createNewTile, initTile, moveTile } from '../utils/tile';
 
 export default function GameContainer() {
     const [tileList, setTileList] = useState(initTile);
+
+    function moveAndCreate({ row, col }) {
+        const movedTileList = moveTile({ tileList, row, col });
+        const newTile = createNewTile(movedTileList);
+        movedTileList.push(newTile);
+        setTileList(movedTileList);
+    }
+
+    useEffect(() => {
+        addKey('up', pressKeyUp);
+        addKey('down', pressKeyDown);
+        addKey('left', pressKeyLeft);
+        addKey('right', pressKeyRight);
+
+        return () => {
+            removeKey('up', pressKeyUp);
+            removeKey('down', pressKeyDown);
+            removeKey('left', pressKeyLeft);
+            removeKey('right', pressKeyRight);
+        };
+    });
+
+    function pressKeyUp() { console.log('up'); moveAndCreate({ row: -1, col: 0 }); }
+    function pressKeyDown() { console.log('down'); moveAndCreate({ row: 1, col: 0 }); }
+    function pressKeyLeft() { console.log('left'); moveAndCreate({ row: 0, col: -1 }); }
+    function pressKeyRight() { console.log('right'); moveAndCreate({ row: 0, col: 1 }); }
 
     return (
         <div className="game-container">
@@ -19,19 +46,19 @@ export default function GameContainer() {
 
             <div className="grid-container">
 
-                { new Array(4).fill(0).map( _ => (
-                    <div className="grid-row">
-                        { new Array(4).fill(0).map( _ => (
-                            <div className="grid-cell"></div>
+                { new Array(4).fill(0).map( (_, idx) => (
+                    <div key={idx} className="grid-row">
+                        { new Array(4).fill(0).map( (_, idx) => (
+                            <div key={idx} className="grid-cell"></div>
                         )) }
                     </div>
                 )) }
 
             </div>
             
-            <div class="tile-container">
+            <div className="tile-container">
                 { tileList.map(tile => (
-                    <div className={`tile tile-${tile.value} tile-position-${tile.col}-${tile.row}`}>
+                    <div key={tile.id} className={`tile tile-${tile.value} tile-position-${tile.col}-${tile.row}`}>
                         <div className="tile-inner">{tile.value}</div>
                     </div>
                 )) }
