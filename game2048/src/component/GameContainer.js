@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
+import { initTile } from '../utils/tile';
 
 export default function GameContainer() {
-    const [tileList, setTileList] = useState([
-        {value: 2, row: 4, col: 1},
-        {value: 2, row: 4, col: 1},
-        {value: 4, row: 4, col: 1},
-        {value: 8, row: 4, col: 3},
-        {value: 2, row: 4, col: 4},
-        {value: 2, row: 3, col: 4},
-    ]);
+    const [tileList, setTileList] = useState(initTile);
 
     return (
         <div className="game-container">
@@ -16,7 +10,7 @@ export default function GameContainer() {
             <div className="game-message">
 
                 <p></p>
-                <div class="lower">
+                <div className="lower">
                     <a href="/" className="keep-playing-button">Keep going</a>
                     <a href="/" className="retry-button">Try again</a>
                 </div>
