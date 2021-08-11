@@ -1,0 +1,22 @@
+# =================== game2048 ===================
+game2048/node_modules
+
+game2048/.pnp
+game2048/.pnp.js
+
+# testing
+game2048/coverage
+
+# production
+game2048/build
+
+# misc
+game2048/.DS_Store
+game2048/.env.local
+game2048/.env.development.local
+game2048/.env.test.local
+game2048/.env.production.local
+
+game2048/npm-debug.log*
+game2048/yarn-debug.log*
+game2048/yarn-error.log*
