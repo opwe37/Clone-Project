@@ -1,13 +1,12 @@
 import React from 'react';
 
-export default function Header() {
+export default function Header({ score }) {
     return (
         <div className="heading">
             <h1 className="title">2048</h1>
             <div className="scores-container">
                 <div className="score-container">
-                    8
-                    <div className="score-addition">+8</div>
+                    {score}
                 </div>
                 <div className="best-container">616</div>
             </div>

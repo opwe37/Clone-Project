@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { addKey, removeKey } from '../utils/keyboard';
 import { createNewTile, initTile, moveTile } from '../utils/tile';
 
-export default function GameContainer() {
+export default function GameContainer({ setScore }) {
     const [tileList, setTileList] = useState(initTile);
 
     function moveAndCreate({ row, col }) {
         const movedTileList = moveTile({ tileList, row, col });
+
+        const score = movedTileList.reduce((acc, tile) => tile.isMerged ? acc + tile.value : acc, 0);
+        setScore(s => s + score);
+        
         const newTile = createNewTile(movedTileList);
         movedTileList.push(newTile);
         setTileList(movedTileList);
