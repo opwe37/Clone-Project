@@ -26,10 +26,10 @@ export default function GameContainer() {
         };
     });
 
-    function pressKeyUp() { console.log('up'); moveAndCreate({ row: -1, col: 0 }); }
-    function pressKeyDown() { console.log('down'); moveAndCreate({ row: 1, col: 0 }); }
-    function pressKeyLeft() { console.log('left'); moveAndCreate({ row: 0, col: -1 }); }
-    function pressKeyRight() { console.log('right'); moveAndCreate({ row: 0, col: 1 }); }
+    function pressKeyUp() { moveAndCreate({ row: -1, col: 0 }); }
+    function pressKeyDown() { moveAndCreate({ row: 1, col: 0 }); }
+    function pressKeyLeft() { moveAndCreate({ row: 0, col: -1 }); }
+    function pressKeyRight() { moveAndCreate({ row: 0, col: 1 }); }
 
     return (
         <div className="game-container">
@@ -58,7 +58,7 @@ export default function GameContainer() {
             
             <div className="tile-container">
                 { tileList.map(tile => (
-                    <div key={tile.id} className={`tile tile-${tile.value} tile-position-${tile.col}-${tile.row}`}>
+                    <div key={tile.id} className={`tile tile-${tile.value} tile-position-${tile.col}-${tile.row} ${tile.isMerged ? 'tile-merged' : ''} ${tile.isNew ? 'tile-new' : ''}`}>
                         <div className="tile-inner">{tile.value}</div>
                     </div>
                 )) }
