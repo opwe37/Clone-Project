@@ -6,15 +6,17 @@ export default function GameContainer({ setScore, setTotal }) {
     const [tileList, setTileList] = useState(initTile);
 
     function moveAndCreate({ row, col }) {
-        const movedTileList = moveTile({ tileList, row, col });
+        const [movedTileList, changed] = moveTile({ tileList, row, col });
 
         const score = movedTileList.reduce((acc, tile) => tile.isMerged ? acc + tile.value : acc, 0);
         setScore(score);
         setTotal(t => t + score);
         
-        const newTile = createNewTile(movedTileList);
-        movedTileList.push(newTile);
-        setTileList(movedTileList);
+        if (changed) {
+            const newTile = createNewTile(movedTileList);
+            movedTileList.push(newTile);
+            setTileList(movedTileList);
+        }
     }
 
     useEffect(() => {

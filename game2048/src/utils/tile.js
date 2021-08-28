@@ -60,15 +60,18 @@ export function moveTile({ tileList, row, col }) {
         });
 
     // 키 방향으로 타일 밀착
+    let isMoved = false;
     const initPos = isMinus ? 1 : 4;
     let pos = initPos;
     for (let i = 0; i < sortedTileList.length; i++) {
         if (isMoveCol) {
+            if (sortedTileList[i].col !== pos) { isMoved = true }
             sortedTileList[i].col = pos;
             pos = isMinus ? pos + 1 : pos - 1;
 
             if (sortedTileList[i].row !== sortedTileList[i + 1]?.row) { pos = initPos; }
         } else {
+            if (sortedTileList[i].row !== pos) { isMoved = true }
             sortedTileList[i].row = pos;
             pos = isMinus ? pos + 1 : pos - 1;
 
@@ -76,6 +79,7 @@ export function moveTile({ tileList, row, col }) {
         }
     }
 
+    let isMerged = false;
     const newTileList = [...sortedTileList];
     let blankPos = 0;
     for (let i = 0; i < sortedTileList.length; i++) {
@@ -102,6 +106,8 @@ export function moveTile({ tileList, row, col }) {
                 ? sortedTileList[i].row === sortedTileList[i+1]?.row 
                 : sortedTileList[i].col === sortedTileList[i+1]?.col
             ) && sortedTileList[i].value === sortedTileList[i+1]?.value) {
+            isMerged = true;
+
             const tile = createNewTile();
             tile.row = sortedTileList[i].row;
             tile.col = sortedTileList[i].col;
@@ -126,5 +132,5 @@ export function moveTile({ tileList, row, col }) {
         } 
     }
 
-    return newTileList;
+    return [newTileList, isMerged || isMoved];
 }

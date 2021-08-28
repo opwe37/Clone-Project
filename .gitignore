@@ -20,3 +20,6 @@ game2048/.env.production.local
 game2048/npm-debug.log*
 game2048/yarn-debug.log*
 game2048/yarn-error.log*
+
+
+zoom/node_modules
