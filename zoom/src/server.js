@@ -19,7 +19,14 @@ const server = http.createServer(app);
 const io = SocketIO(server);
 
 io.on('connection', (socket) => {
-    console.log(socket); // socket 안에 sockets 라는 연결된 소켓'들'을 관리하는 곳이 있음!!
+    // console.log(socket); // socket 안에 sockets 라는 연결된 소켓'들'을 관리하는 곳이 있음!!
+    socket.onAny((event) => {
+        console.log(`got ${event}`)
+    })
+    socket.on("enter_room", (roomName, done) => {
+        socket.join(roomName);
+        done()
+    });
 })
 
 
