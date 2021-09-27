@@ -19,7 +19,9 @@ const server = http.createServer(app);
 const io = SocketIO(server);
 
 io.on('connection', (socket) => {
-    // console.log(socket); // socket 안에 sockets 라는 연결된 소켓'들'을 관리하는 곳이 있음!!
+    // socket 안에 sockets 라는 연결된 소켓'들'을 관리하는 곳이 있음!!
+    socket['nickname'] = 'Anonymous';
+
     socket.onAny((event) => {
         console.log(`got ${event}`)
     })
@@ -27,15 +29,20 @@ io.on('connection', (socket) => {
     socket.on("enter_room", (roomName, done) => {
         socket.join(roomName);
         done();
-        socket.to(roomName).emit("welcome");
+        socket.to(roomName).emit("welcome", socket.nickname);
     });
 
     socket.on("disconnecting", () => {
-        socket.rooms.forEach(room => socket.to(room).emit("bye"));
+        socket.rooms.forEach(room => socket.to(room).emit("bye", socket.nickname));
     });
 
     socket.on("new_message", (msg, room, done) => {
-        socket.to(room).emit("new_message", msg);
+        socket.to(room).emit("new_message", `${socket.nickname}: ${msg}`);
+        done();
+    });
+
+    socket.on("nickname", (nickname, done) => {
+        socket["nickname"] = nickname;
         done();
     });
 })
