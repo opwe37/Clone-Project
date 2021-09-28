@@ -52,7 +52,7 @@ function handleRoomSubmit(event) {
     event.preventDefault();
 
     if (!socket['nickname']) {
-        alert("닉네임을 입력해주세요.");
+        alert("Please Save the your Nickname");
         return;
     }
 
@@ -76,3 +76,14 @@ socket.on("bye", (left) => {
 });
 
 socket.on("new_message", addMessage);
+
+socket.on('change_room', (rooms) => {
+    console.log(rooms)
+    const openRoomUl = welcome.querySelector('ul');
+    openRoomUl.innerHTML = '';
+    rooms.forEach(room => {
+        const li = document.createElement('li');
+        li.innerHTML = room;
+        openRoomUl.append(li);
+    });
+});

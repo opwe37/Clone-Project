@@ -18,23 +18,47 @@ const handleListen = () => console.log(`Listening on http://localhost:3000`);
 const server = http.createServer(app);
 const io = SocketIO(server);
 
+function getPublicRooms() {
+    const {
+        sockets: {
+            adapter: {sids, rooms},
+        },
+    } = io;
+
+    const publicRooms = [];
+    
+    rooms.forEach((_, key) => {
+        if (!sids.has(key)) { publicRooms.push(key); }
+    });
+
+    console.log(publicRooms)
+
+    return publicRooms;
+}
+
 io.on('connection', (socket) => {
     // socket 안에 sockets 라는 연결된 소켓'들'을 관리하는 곳이 있음!!
     socket['nickname'] = 'Anonymous';
+    socket.emit("change_room", getPublicRooms());
 
     socket.onAny((event) => {
-        console.log(`got ${event}`)
-    })
+        console.log(`got ${event}`);
+    });
 
     socket.on("enter_room", (roomName, done) => {
         socket.join(roomName);
         done();
         socket.to(roomName).emit("welcome", socket.nickname);
+        io.sockets.emit("change_room", getPublicRooms());
     });
 
     socket.on("disconnecting", () => {
         socket.rooms.forEach(room => socket.to(room).emit("bye", socket.nickname));
     });
+
+    socket.on("disconnect", () => {
+        io.sockets.emit("change_room", getPublicRooms());
+    })
 
     socket.on("new_message", (msg, room, done) => {
         socket.to(room).emit("new_message", `${socket.nickname}: ${msg}`);
