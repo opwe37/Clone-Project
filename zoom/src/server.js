@@ -36,6 +36,10 @@ function getPublicRooms() {
     return publicRooms;
 }
 
+function getCountInRoom(roomName){
+    return io.sockets.adapter.rooms.get(roomName)?.size;
+}
+
 io.on('connection', (socket) => {
     // socket 안에 sockets 라는 연결된 소켓'들'을 관리하는 곳이 있음!!
     socket['nickname'] = 'Anonymous';
@@ -47,13 +51,13 @@ io.on('connection', (socket) => {
 
     socket.on("enter_room", (roomName, done) => {
         socket.join(roomName);
-        done();
-        socket.to(roomName).emit("welcome", socket.nickname);
+        done(getCountInRoom(roomName));
+        socket.to(roomName).emit("welcome", socket.nickname, getCountInRoom(roomName));
         io.sockets.emit("change_room", getPublicRooms());
     });
 
     socket.on("disconnecting", () => {
-        socket.rooms.forEach(room => socket.to(room).emit("bye", socket.nickname));
+        socket.rooms.forEach(room => socket.to(room).emit("bye", socket.nickname, getCountInRoom(room) -1));
     });
 
     socket.on("disconnect", () => {
