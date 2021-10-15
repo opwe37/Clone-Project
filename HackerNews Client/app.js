@@ -1,4 +1,8 @@
-// 페이징 구현
+// 기존 문제점: DOM API를 최소화하면서 string 형식으로 변경하긴 했지만,
+//             여전히 마크업 구조가 복잡해진다면, 전체 구조를 한눈에 파악하기 어려움
+// 해결법: template 형식으로 변경 (전체 틀을 만들고, 필요할 때, 해당 부분을 채워넣는 형식)
+
+// 진행사항: template방식 적용 + tailwindcss 맛보기 적용
 
 const container = document.getElementById('root');
 const content = document.createElement('div');
@@ -6,9 +10,6 @@ const content = document.createElement('div');
 const NEWS_URL = 'https://api.hnpwa.com/v0/news/1.json';
 const CONTENT_URL = 'https://api.hnpwa.com/v0/item/@id.json';
 
-// 상태값 관리를 위한 저장소 선언
-// 특정 페이징 위치에서 뉴스를 클릭해서 본 이후, 뒤로가기 했을때
-// 어떤 페이징 위치를 보여줄지 기억하기위한 상태값 관리가 필요
 const store = {
     currentPage: 1,
 };
@@ -26,7 +27,22 @@ function newsFeed() {
     const newsFeed = getData(NEWS_URL);
     const newsList = [];
 
-    newsList.push('<ul>');
+    const min_page = 1;
+    const max_page = newsFeed.length / 10;
+
+    let template = `
+        <div class="container mx-auto p-4">
+            <h1>Hacker News</h1>
+            <ul>
+                {{__news_feed__}}
+            </ul>
+            <div>
+                <a href="#/page/{{__prev_page__}}">이전 페이지</a>
+                <a href="#/page/{{__next_page__}}">다음 페이지</a>
+            </div>
+        </div>
+    `;
+
     for (let i = (store.currentPage - 1) * 10; i < store.currentPage * 10; i++) {
         newsList.push(`
             <li>
@@ -36,19 +52,12 @@ function newsFeed() {
             </li>
         `);
     }
-    newsList.push('</ul>');
 
-    // 방어 코드 작성 (newFeed에서 제공하는 범위 밖으로 이동을 막기 위함)
-    const min_page = 1;
-    const max_page = newsFeed.length / 10;
+    template = template.replace("{{__news_feed__}}", newsList.join(''));
+    template = template.replace("{{__prev_page__}}", store.currentPage > min_page ? store.currentPage-1 : min_page);
+    template = template.replace("{{__next_page__}}", store.currentPage < max_page ? store.currentPage+1 : max_page);
 
-    newsList.push(`
-        <div>
-            <a href="#/page/${store.currentPage > min_page ? store.currentPage-1 : min_page}">이전 페이지</a>
-            <a href="#/page/${store.currentPage < max_page ? store.currentPage+1 : max_page}">다음 페이지</a>
-        </div>
-    `);
-    container.innerHTML = newsList.join('');
+    container.innerHTML = template;
 }
 
 function newsDetail() {
