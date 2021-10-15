@@ -1,7 +1,4 @@
-// template 방식의 문제: 단적으로 템플릿 내 마킹되어 있는 지점이 많다면?
-//                      마킹된 지점 만큼의 replace 구문이 등장해야 함
-//                      - 이를 보완하기 위한 다양한 Template 라이브러리가 존재함
-// TODO: Handlebars 라이브러리를 적용시켜보자
+// 글 읽음 상태 추가
 
 const container = document.getElementById('root');
 const content = document.createElement('div');
@@ -11,6 +8,7 @@ const CONTENT_URL = 'https://api.hnpwa.com/v0/item/@id.json';
 
 const store = {
     currentPage: 1,
+    feeds: [],
 };
 
 function getData(url) {
@@ -22,8 +20,17 @@ function getData(url) {
     return JSON.parse(ajax.response);
 }
 
+function makeFeed(feeds) {
+    // feeds[i] = 하나의 뉴스 객체
+    for (let i = 0; i < feeds.length; i++) {
+        // feeds[i]에 read라는 속성값 추가
+        feeds[i].read = false;
+    }
+    return feeds
+}
+
 function newsFeed() {
-    const newsFeed = getData(NEWS_URL);
+    let newsFeed = store.feeds;
     const newsList = [];
 
     const min_page = 1;
@@ -52,9 +59,14 @@ function newsFeed() {
         </div>
     `;
 
+    if (newsFeed.length === 0) {
+        newsFeed = store.feeds = makeFeed(getData(NEWS_URL));
+    }
+
     for (let i = (store.currentPage - 1) * 10; i < store.currentPage * 10; i++) {
+        // 뉴스 객체의 read 값에 따라 배경색 설정하도록 수정
         newsList.push(`
-            <div class="p-6 bg-white mt-6 rounded-lg shadow-md transition-colors duration-500 hover:bg-green-100">
+            <div class="p-6 ${newsFeed[i].read ? 'bg-red-500' : 'bg-white'} mt-6 rounded-lg shadow-md transition-colors duration-500 hover:bg-green-100">
                 <div class="flex">
                     <div class="flex-auto">
                         <a href="#/show/${newsFeed[i].id}">${newsFeed[i].title}</a>  
@@ -114,6 +126,14 @@ function newsDetail() {
         </div>
     `;
 
+    // 글을 클릭해서 읽은 경우, read 속성을 true로 변경
+    for (let i = 0; i < store.feeds.length; i++) {
+        if (store.feeds[i].id === Number(id)) {
+            store.feeds[i].read = true;
+            break;
+        }
+    }
+
     function makeComment(comments, depth = 0) {
         const commentString = [];
 
@@ -128,7 +148,6 @@ function newsDetail() {
                 </div>   
             `);
 
-            // 대댓글 처리를 위한 재귀호출
             if (comments[i].comments.length) {
                 commentString.push(makeComment(comments[i].comments, depth+1));
             }
