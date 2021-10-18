@@ -1,18 +1,33 @@
-// 글 읽음 상태 추가
+// 타입 알리아스 방식으로 타입 지정
+type Store = {
+    currentPage: number;
+    feeds: NewsFeed[];
+}
 
-const container = document.getElementById('root');
-const content = document.createElement('div');
+type NewsFeed = {
+    id: number;
+    comments_count: number;
+    url: string;
+    user: string;
+    time_ago: string;
+    points: number;
+    title: string;
+    read?: boolean;
+}
 
-const NEWS_URL = 'https://api.hnpwa.com/v0/news/1.json';
-const CONTENT_URL = 'https://api.hnpwa.com/v0/item/@id.json';
+const container: HTMLElement | null = document.getElementById('root');
 
-const store = {
+const NEWS_URL: string = 'https://api.hnpwa.com/v0/news/1.json';
+const CONTENT_URL: string = 'https://api.hnpwa.com/v0/item/@id.json';
+
+// 사용자 지정 객체에 타입 설정: 타입 알리아스 or 인터페이스
+const store: Store = {
     currentPage: 1,
     feeds: [],
 };
 
 function getData(url) {
-    const ajax = new XMLHttpRequest();
+    const ajax: XMLHttpRequest = new XMLHttpRequest();
 
     ajax.open('GET', url, false);
     ajax.send();
@@ -21,16 +36,25 @@ function getData(url) {
 }
 
 function makeFeed(feeds) {
-    // feeds[i] = 하나의 뉴스 객체
+    // 타입 추론: 변수의 타입을 추론할 수 있는 상황이라면, 자동으로 타이핑
     for (let i = 0; i < feeds.length; i++) {
-        // feeds[i]에 read라는 속성값 추가
         feeds[i].read = false;
     }
     return feeds
 }
 
+function updateView(html: string) {
+    // Type Guard
+    // container는 null을 갖을 수 있기 때문에, 사용하기 전에 null 체크를 해줘야 함
+    if (container) {
+        container.innerHTML = html; 
+    } else {
+        console.error('최상위 컨테이너가 없어 UI를 진행하지 못합니다.');
+    }
+}
+
 function newsFeed() {
-    let newsFeed = store.feeds;
+    let newsFeed: NewsFeed[] = store.feeds;
     const newsList = [];
 
     const min_page = 1;
@@ -90,7 +114,7 @@ function newsFeed() {
     template = template.replace("{{__prev_page__}}", store.currentPage > min_page ? store.currentPage-1 : min_page);
     template = template.replace("{{__next_page__}}", store.currentPage < max_page ? store.currentPage+1 : max_page);
 
-    container.innerHTML = template;
+    updateView(template);
 }
 
 function newsDetail() {
@@ -156,7 +180,7 @@ function newsDetail() {
         return commentString.join('');
     }
 
-    container.innerHTML = template.replace('{{__comments__}}', makeComment(newsContent.comments));
+    updateView(template.replace('{{__comments__}}', makeComment(newsContent.comments)));
 }
 
 function router() {
