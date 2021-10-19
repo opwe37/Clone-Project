@@ -1,30 +1,37 @@
-type Store = {
+// interface vs type alias
+// - 대부분 유사한 기능을 제공하지만, 일부 다른 기능이 있음
+// - interface가 더 많은 기능을 제공해서 interface를 권장하긴 함
+// 대표적 차이점: interface 내부에는 유니온, 교차 타입 불가
+
+interface Store {
     currentPage: number;
     feeds: NewsFeed[];
 }
 
-type News = {
-    id: number;
-    time_ago: string;
-    title?: string;
-    url: string;
-    user: string;
-    content: string;
+// 지시어 사용
+// readonly => 수정 불가 타입으로 만들어줌
+interface News {
+    readonly id: number;
+    readonly time_ago: string;
+    readonly title?: string;
+    readonly url: string;
+    readonly user: string;
+    readonly content: string;
 }
 
-type NewsFeed = News & {
-    comments_count: number;
-    points: number;
+interface NewsFeed extends News {
+    readonly comments_count: number;
+    readonly points: number;
     read?: boolean;
 }
 
-type NewsDetail = News & {
-    comments: NewsComment[];
+interface NewsDetail extends News {
+    readonly comments: NewsComment[];
 }
 
-type NewsComment = News & {
-    comments: NewsComment[];
-    level: number;
+interface NewsComment extends News {
+    readonly comments: NewsComment[];
+    readonly level: number;
 }
 
 const container: HTMLElement | null = document.getElementById('root');
