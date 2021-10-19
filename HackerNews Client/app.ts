@@ -1,15 +1,8 @@
-// interface vs type alias
-// - 대부분 유사한 기능을 제공하지만, 일부 다른 기능이 있음
-// - interface가 더 많은 기능을 제공해서 interface를 권장하긴 함
-// 대표적 차이점: interface 내부에는 유니온, 교차 타입 불가
-
 interface Store {
     currentPage: number;
     feeds: NewsFeed[];
 }
 
-// 지시어 사용
-// readonly => 수정 불가 타입으로 만들어줌
 interface News {
     readonly id: number;
     readonly time_ago: string;
@@ -44,8 +37,36 @@ const store: Store = {
     feeds: [],
 };
 
-// getData(url: string): NewsFeed[] | NewsDetail {...}
-// 사용하는 측면에서 어떤 데이터가 반환되는데? 라는 문제가 생김 => 제네릭!!!
+class Api {
+    url: string;
+    ajax: XMLHttpRequest;
+
+    constructor(url: string) {
+        this.url = url;
+        this.ajax = new XMLHttpRequest();
+    }
+
+    // protected 클래스 외부로 들어내지 않을 때 (상속 관계의 클래스에서는 보임)
+    protected getRequest<AjaxResponse>(): AjaxResponse {
+        this.ajax.open('GET', this.url, false);
+        this.ajax.send();
+
+        return JSON.parse(this.ajax.response);
+    }
+}
+
+class NewsFeedApi extends Api { 
+    getData(): NewsFeed[] {
+        return this.getRequest<NewsFeed[]>()
+    }
+}
+
+class NewsDetailApi extends Api { 
+    getData(): NewsDetail {
+        return this.getRequest<NewsDetail>();
+    }
+}
+
 function getData<AjaxResponse>(url: string): AjaxResponse {
     const ajax: XMLHttpRequest = new XMLHttpRequest();
 
@@ -71,6 +92,7 @@ function updateView(html: string): void {
 }
 
 function newsFeed(): void {
+    const api = new NewsFeedApi(NEWS_URL);
     let newsFeed: NewsFeed[] = store.feeds;
     const newsList = [];
 
@@ -101,11 +123,10 @@ function newsFeed(): void {
     `;
 
     if (newsFeed.length === 0) {
-        newsFeed = store.feeds = makeFeed(getData<NewsFeed[]>(NEWS_URL));
+        newsFeed = store.feeds = makeFeed(api.getData());
     }
 
     for (let i = (store.currentPage - 1) * 10; i < store.currentPage * 10; i++) {
-        // 뉴스 객체의 read 값에 따라 배경색 설정하도록 수정
         newsList.push(`
             <div class="p-6 ${newsFeed[i].read ? 'bg-red-500' : 'bg-white'} mt-6 rounded-lg shadow-md transition-colors duration-500 hover:bg-green-100">
                 <div class="flex">
@@ -136,7 +157,8 @@ function newsFeed(): void {
 
 function newsDetail(): void {
     const id = location.hash.substr(7);
-    const newsContent = getData<NewsDetail>(CONTENT_URL.replace('@id', id));
+    const api = new NewsDetailApi(CONTENT_URL.replace('@id', id));
+    const newsContent = api.getData();
     
     let template = `
         <div class="bg-gray-600 min-h-screen pb-8">
@@ -167,7 +189,6 @@ function newsDetail(): void {
         </div>
     `;
 
-    // 글을 클릭해서 읽은 경우, read 속성을 true로 변경
     for (let i = 0; i < store.feeds.length; i++) {
         if (store.feeds[i].id === Number(id)) {
             store.feeds[i].read = true;
