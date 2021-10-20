@@ -1,27 +1,15 @@
+// 이전: store 객체를 전역으로 관리하고 있던 문제가 있음
+// 수정: store 클래스를 별도로 만들어, 사용하는 곳에 넘겨줄 것
+
 import Router from "./core/router";
 import { NewsFeedView, NewsDetailView } from "./page";
-import { Store } from './types';
+import Store from "./store";
 
-const store: Store = {
-    currentPage: 1,
-    feeds: [],
-};
-
-// 파일이 분리되면서, 다른 파일에서는 store에 접근이 불가능해짐
-// => 브라우저의 window 객체에 store를 저장
-// => 좋은 방식은 아니지만, 가장 손쉬운 방법
-declare global {
-    interface Window {
-        store: Store;
-    }
-}
-
-window.store = store;
-// =========================================================
+const store = new Store();
 
 const router: Router = new Router();
-const newsFeedView = new NewsFeedView('root');
-const newsDetailView = new NewsDetailView('root');
+const newsFeedView = new NewsFeedView('root', store);
+const newsDetailView = new NewsDetailView('root', store);
 
 router.setDefaultPage(newsFeedView);
 router.addRoutePath('/page/', newsFeedView);
