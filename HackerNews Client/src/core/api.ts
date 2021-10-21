@@ -1,21 +1,32 @@
 import { NewsFeed, NewsDetail } from '../types';
 
 export class Api {
-    ajax: XMLHttpRequest;
+    xhr: XMLHttpRequest;
     url: string;
 
     constructor(url: string) {
-        this.ajax = new XMLHttpRequest();
+        this.xhr = new XMLHttpRequest();
         this.url = url;
     }
     
-    getRequest<AjaxResponse>(cb: (data: AjaxResponse) => void): void {
-        this.ajax.open('GET', this.url);
-        this.ajax.addEventListener('load', () => {
+    // 비동기로 바뀌면서, 응답을 받을 때, 데이터를 전달하여 UI가 업데이트 되도록
+    // 콜백 함수를 전달
+    getRequestWithXHR<AjaxResponse>(cb: (data: AjaxResponse) => void): void {
+        this.xhr.open('GET', this.url);
+        this.xhr.addEventListener('load', () => {
             // ajax.response 속성에 응답이 왔을 때 처리
-            cb(JSON.parse(this.ajax.response) as AjaxResponse);
+            cb(JSON.parse(this.xhr.response) as AjaxResponse);
         });
-        this.ajax.send();
+        this.xhr.send();
+    }
+
+    getRequestWithPromise<AjaxResponse>(cb: (data: AjaxResponse) => void): void {
+        fetch(this.url)
+            .then(response => response.json())
+            .then(cb)
+            .catch(() => {
+                console.error('데이터를 불러오지 못했습니다.');
+            })
     }
 }
 
@@ -24,8 +35,12 @@ export class NewsFeedApi extends Api {
         super(url);
     }
 
-    getData(cb: (data: NewsFeed[]) => void): void {
-        return this.getRequest<NewsFeed[]>(cb)
+    getDataWithXHR(cb: (data: NewsFeed[]) => void): void {
+        return this.getRequestWithXHR<NewsFeed[]>(cb)
+    }
+
+    getDataWithPromise(cb: (data: NewsFeed[]) => void): void {
+        return this.getRequestWithPromise<NewsFeed[]>(cb)
     }
 }
 
@@ -34,7 +49,11 @@ export class NewsDetailApi extends Api {
         super(url);
     }
 
-    getData(cb: (data: NewsDetail) => void): void {
-        return this.getRequest<NewsDetail>(cb);
+    getDataWithXHR(cb: (data: NewsDetail) => void): void {
+        return this.getRequestWithXHR<NewsDetail>(cb)
+    }
+
+    getDataWithPromise(cb: (data: NewsDetail) => void): void {
+        return this.getRequestWithPromise<NewsDetail>(cb);
     }
 }

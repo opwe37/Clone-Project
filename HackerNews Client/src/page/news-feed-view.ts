@@ -41,7 +41,7 @@ export default class NewsFeedView extends View {
         // consturctor => render, 왜?
         // 생성자에서 비동기 호출을 하면, render() 호출하는 시점에 응답이 왔을지 보장X
         if (!this.store.hasFeed) {
-            this.api.getData((data: NewsFeed[]) => {
+            this.api.getDataWithPromise((data: NewsFeed[]) => {
                 this.store.setFeeds(data);
                 this.renderView();
             });
