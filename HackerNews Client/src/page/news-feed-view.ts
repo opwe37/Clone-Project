@@ -37,22 +37,11 @@ export default class NewsFeedView extends View {
         this.api = new NewsFeedApi(NEWS_URL);
     }
     
-    render() {
-        // consturctor => render, 왜?
-        // 생성자에서 비동기 호출을 하면, render() 호출하는 시점에 응답이 왔을지 보장X
+    async render(): Promise<void> {
         if (!this.store.hasFeed) {
-            this.api.getDataWithPromise((data: NewsFeed[]) => {
-                this.store.setFeeds(data);
-                this.renderView();
-            });
+            this.store.setFeeds(await this.api.getData());
         }
 
-        this.renderView();
-    }
-    
-    // render에 있던 코드를 별도로 분리함?
-    // 비동기 코드가 render 쪽으로 오면서, 원래 코드가 반복적으로 사용될 필요가 있음
-    renderView() {
         this.store.currentPage = Number(location.hash.substr(7) || 1);
     
         for (let i = (this.store.currentPage - 1) * 10; i < this.store.currentPage * 10; i++) {
